@@ -71,7 +71,7 @@ def start_screen():
     global load_map
     load_music('start.wav')
     x, y = None, None
-    intro_text = ["Игра 'Линеечки'", "",
+    intro_text = ["Игра '3 в ряд'", "",
                   "Правила игры",
                   "Произвольная карта",
                   "Начать игру"]
@@ -106,14 +106,10 @@ while True:
                         return
                     elif index_in_nenu == 2:
                         readfile('data/Rules.txt')
-                    elif index_in_nenu == 3:
-                        choose_hero(menu_hero)
                     elif index_in_nenu == 4:
                         color = '#4169E1' if load_map else 'black'
                         pygame.draw.line(screen, pygame.Color(color), (10, 255), (287, 255), 2)
                         load_map = not load_map
-                    elif index_in_nenu == 5:
-                        readfile('data/Help.txt')
                     elif index_in_nenu == 7:
                         return
     pygame.display.flip()
