@@ -4,6 +4,7 @@ import random
 pygame.init()
 size = 420, 420
 winner = False
+kol = 0
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
@@ -120,8 +121,10 @@ class Lines(Board):
     def check(self, x, y):
         try:
             if self.board[y][x] == self.board[y][x + 1] == self.board[y][x + 2]:  # если в ряду 3 одинаковых
+                # kol += 1
                 self.board[y][x], self.board[y][x + 1], self.board[y][x + 2] = 0, 0, 0  # удаляем их
             elif self.board[y][x] == self.board[y + 1][x] == self.board[y + 2][x]:  # если в столбце 3 одинаковых
+                # kol += 1
                 self.board[y][x], self.board[y + 1][x], self.board[y + 2][x] = 0, 0, 0  # удаляем их
             return
         except IndexError:  # если за границы поля выходим
