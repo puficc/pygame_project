@@ -3,6 +3,7 @@ import random
 
 pygame.init()
 size = 420, 420
+winner = False
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
