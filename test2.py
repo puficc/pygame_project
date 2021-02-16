@@ -88,61 +88,57 @@ class Lines(Board):
         return False
 
     def on_click(self, cell):
-        # "распаковка" координат клетки
+
         x = cell[0]
         y = cell[1]
 
         if self.selected_cell is None:
-            # если в выбранной клетке совсем ничего нет, то
-            if self.board[y][x] != 0:  # содержимого нет
+            if self.board[y][x] != 0:
                 self.selected_cell = x, y
             else:
-                self.board[y][x] = 1  # заполняется клетка шариком цвета 1
-                # расстановка 2 шариков рандомных цветов
+                self.board[y][x] = 1
                 self.board[random.randrange(10)][random.randrange(10)] = random.randrange(7)
                 self.board[random.randrange(10)][random.randrange(10)] = random.randrange(7)
         else:
             if self.selected_cell == (x, y):
                 self.selected_cell = None
                 return
-            # перемещение
+
             x2 = self.selected_cell[0]
             y2 = self.selected_cell[1]
             if self.has_path(x2, y2, x, y):
-                # меняем местами содержимое клеток
-                self.board[y][x], self.board[y2][x2] = self.board[y2][x2], self.board[y][x]
-                # self.board[y][x] = colors_selection
-                # self.board[y2][x2] = 0
+                self.board[y][x] = 1
+                self.board[y2][x2] = 0
                 self.selected_cell = None
 
-    # проверка на "3 в ряд"
     def check(self, x, y):
         try:
-            if self.board[y][x] == self.board[y][x + 1] == self.board[y][x + 2]:  # если в ряду 3 одинаковых
-                self.board[y][x], self.board[y][x + 1], self.board[y][x + 2] = 0, 0, 0  # удаляем их
-            elif self.board[y][x] == self.board[y + 1][x] == self.board[y + 2][x]:  # если в столбце 3 одинаковых
-                self.board[y][x], self.board[y + 1][x], self.board[y + 2][x] = 0, 0, 0  # удаляем их
+            if self.board[y][x] == self.board[y][x + 1] == self.board[y][x + 2]:
+                self.board[y][x], self.board[y][x + 1], self.board[y][x + 2] = 0, 0, 0
+            elif self.board[y][x] == self.board[y + 1][x] == self.board[y + 2][x]:
+                self.board[y][x], self.board[y + 1][x], self.board[y + 2][x] = 0, 0, 0
             return
-        except IndexError:  # если за границы поля выходим
-            pass  # заглушка, чтобы ничего не происходило
+        except IndexError:
+            pass
 
-    # воспроизведение отрисовки шариков / прямоугольников на пустых местах
     def render(self):
         for y in range(self.height):
             for x in range(self.width):
-                if self.board[y][x] != 0:  # если ячейка не пуста
-                    color = pygame.Color(colors_selection[str(self.board[y][x])])  # придаем шарику опред. цвет
-                    self.check(x, y)  # делаем проверку на схожесть соседних шариков
-                    if self.selected_cell == (x, y):  # если выбранная клетка соответствует заполненной
-                        color = pygame.Color(207, 57, 31)  # красим в красный
-                    # отрисовка кружочка на поле
+                if self.board[y][x] != 0:
+                    color = pygame.Color(colors_selection[str(self.board[y][x])])
+                    self.check(x, y)
+                    if self.selected_cell == (x, y):
+                        color = pygame.Color(207, 57, 31)
                     pygame.draw.ellipse(screen, color,
                                         (x * self.cell_size + self.left, y * self.cell_size + self.top, self.cell_size,
                                          self.cell_size))
-                # отрисовка прямоугольника в образовавшемся пустом месте
+
                 pygame.draw.rect(screen, pygame.Color(255, 255, 255),
                                  (x * self.cell_size + self.left, y * self.cell_size + self.top, self.cell_size,
                                   self.cell_size), 1)
+
+    def check_pos(self):
+        pass
 
 
 board = Lines(10, 10)
