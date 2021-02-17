@@ -12,8 +12,10 @@ clock = pygame.time.Clock()
 
 all_sprites = pygame.sprite.Group()
 
+
 def terminate():
     sys.exit()
+
 
 def load_image(name, color_key=None):
     fullname = os.path.join('data', name)
@@ -36,7 +38,7 @@ def readfile(filename):
     screen.fill(pygame.Color("#333333"))
     text_coord = 3
     font = pygame.font.Font(None, 20)
-    with open(filename,'rt') as f:
+    with open(filename, 'rt') as f:
         read_data = list(map(str.strip, f.readlines()))
         for line in read_data:
             string_rendered = font.render(line, 1, pygame.Color('white'))
@@ -53,7 +55,6 @@ def readfile(filename):
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                 return
         pygame.display.flip()
-
 
 
 def load_music(name):
@@ -78,7 +79,7 @@ def start_screen():
     global load_map
     # load_music('start.wav')
     x, y = None, None
-    intro_text = ["Игра 'Морской бой'", "",
+    intro_text = ["Игра 'Линеечки'", "",
                   "Правила игры",
                   "Произвольно расставить шары",
                   "Начать игру"]

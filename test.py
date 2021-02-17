@@ -64,6 +64,7 @@ class Lines(Board):
     def __init__(self, width, height):
         super().__init__(width, height)
         self.selected_cell = None
+        self.kol = 0
 
     def has_path(self, x1, y1, x2, y2):
         # словарь расстояний
@@ -121,11 +122,12 @@ class Lines(Board):
     def check(self, x, y):
         try:
             if self.board[y][x] == self.board[y][x + 1] == self.board[y][x + 2]:  # если в ряду 3 одинаковых
-                # kol += 1
+                self.kol += 1
                 self.board[y][x], self.board[y][x + 1], self.board[y][x + 2] = 0, 0, 0  # удаляем их
             elif self.board[y][x] == self.board[y + 1][x] == self.board[y + 2][x]:  # если в столбце 3 одинаковых
-                # kol += 1
+                self.kol += 1
                 self.board[y][x], self.board[y + 1][x], self.board[y + 2][x] = 0, 0, 0  # удаляем их
+            print(self.kol)
             return
         except IndexError:  # если за границы поля выходим
             pass  # заглушка, чтобы ничего не происходило
