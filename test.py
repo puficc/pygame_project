@@ -127,7 +127,8 @@ class Lines(Board):
             elif self.board[y][x] == self.board[y + 1][x] == self.board[y + 2][x]:  # если в столбце 3 одинаковых
                 self.kol += 1
                 self.board[y][x], self.board[y + 1][x], self.board[y + 2][x] = 0, 0, 0  # удаляем их
-            print(self.kol)
+            # if self.kol == 6:
+            #     print('win')
             return
         except IndexError:  # если за границы поля выходим
             pass  # заглушка, чтобы ничего не происходило
