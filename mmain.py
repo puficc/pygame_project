@@ -67,14 +67,6 @@ def load_music(name):
         raise SystemExit(message)
 
 
-def load_map_file(filename):
-    filename = "data/" + filename
-    with open(filename, 'r') as mapFile:
-        level_map = [line.strip() for line in mapFile]
-    max_width = max(map(len, level_map))
-    return list(map(lambda x: x.ljust(max_width, '.'), level_map))
-
-
 def congratulations(winner):
     # load_music('final.wav')
     message = "Вы выиграли!" if winner else "Вы проиграли!"
@@ -232,7 +224,7 @@ class Lines(Board):
             if self.board[y][x] != 0:  # содержимого нет
                 self.selected_cell = x, y
             else:
-                self.board[y][x] = random.randint(1, 7)  # заполняется клетка шариком цвета 1
+                self.board[y][x] = random.randint(1, 7)  # заполняется клетка шариком рандомного цвета
                 # расстановка 2 шариков рандомных цветов
                 self.board[random.randrange(10)][random.randrange(10)] = random.randint(1, 7)
                 self.board[random.randrange(10)][random.randrange(10)] = random.randint(1, 7)
