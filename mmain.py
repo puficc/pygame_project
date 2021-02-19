@@ -6,10 +6,11 @@ import random
 pygame.init()
 
 FPS = 10
-WIDTH = HEIGHT = 400
+WIDTH = HEIGHT = 420
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
+running = True
 
 
 def terminate():
@@ -74,6 +75,28 @@ def load_map_file(filename):
     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
 
 
+def congradulations(winner):
+    # load_music('final.wav')
+    message = "Вы выиграли!" if winner else "Вы проиграли!"
+    font = pygame.font.Font(None, 50)
+    text = font.render(message, True, pygame.Color("#000080"))
+    text_x = WIDTH // 2 - text.get_width() // 2
+    text_y = HEIGHT // 2 - text.get_height() // 2
+    text_w = text.get_width()
+    text_h = text.get_height()
+    clock = pygame.time.Clock()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+        screen.fill(pygame.Color("#4682B4"))
+        screen.blit(text, (text_x, text_y))
+        all_sprites.draw(screen)
+        all_sprites.update()
+        clock.tick(20)
+        pygame.display.flip()
+
+
 def start_screen():
     global load_map
     # load_music('start.wav')
@@ -81,7 +104,7 @@ def start_screen():
     intro_text = ["Игра 'Линеечки'", "",
                   "Правила игры",
                   "Произвольно расставить шары",
-                  "Начать игру"]
+                  "Чтобы начать нажмите любую клавишу"]
 
     menu_border = pygame.sprite.Group()
     fon = pygame.transform.scale(load_image('firstpctr.jfif'), (WIDTH, HEIGHT))
@@ -122,7 +145,7 @@ def start_screen():
         pygame.display.flip()
 
 
-COLORS_SELECTION = {'1': (243, 183, 86), '2': (0, 0, 0),
+COLORS_SELECTION = {'1': (255, 255, 255), '2': (243, 184, 177),
                     '3': (185, 219, 147),
                     '4': (127, 165, 248), '5': (222, 120, 157),
                     '6': (247, 206, 70), '7': (196, 94, 245)}
@@ -210,10 +233,10 @@ class Lines(Board):
             if self.board[y][x] != 0:  # содержимого нет
                 self.selected_cell = x, y
             else:
-                self.board[y][x] = 1  # заполняется клетка шариком цвета 1
+                self.board[y][x] = random.randint(1, 7)  # заполняется клетка шариком цвета 1
                 # расстановка 2 шариков рандомных цветов
-                self.board[random.randrange(10)][random.randrange(10)] = random.randrange(7)
-                self.board[random.randrange(10)][random.randrange(10)] = random.randrange(7)
+                self.board[random.randrange(10)][random.randrange(10)] = random.randint(1, 7)
+                self.board[random.randrange(10)][random.randrange(10)] = random.randint(1, 7)
         else:
             if self.selected_cell == (x, y):
                 self.selected_cell = None
@@ -230,6 +253,7 @@ class Lines(Board):
 
     # проверка на "3 в ряд"
     def check(self, x, y):
+        global kol
         try:
             if self.board[y][x] == self.board[y][x + 1] == self.board[y][x + 2]:  # если в ряду 3 одинаковых
                 self.kol += 1
@@ -237,7 +261,7 @@ class Lines(Board):
             elif self.board[y][x] == self.board[y + 1][x] == self.board[y + 2][x]:  # если в столбце 3 одинаковых
                 self.kol += 1
                 self.board[y][x], self.board[y + 1][x], self.board[y + 2][x] = 0, 0, 0  # удаляем их
-            # print(self.kol)
+            kol = self.kol
             return
         except IndexError:  # если за границы поля выходим
             pass  # заглушка, чтобы ничего не происходило
@@ -261,7 +285,7 @@ class Lines(Board):
                                   self.cell_size), 1)
 
 
-load_map, my_hero_image = False, None
+load_map = False
 start_screen()
 # load_music('base.wav')
 winner, kol = False, 0
@@ -271,14 +295,17 @@ board = Lines(10, 10)
 board.set_view(10, 10, 40)
 
 while running == True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            terminate()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            board.get_click(event.pos)
+    while kol != 10:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                board.get_click(event.pos)
 
-    screen.fill((0, 0, 0))
-    board.render()
-    pygame.display.flip()
-    clock.tick(50)
+        screen.fill((0, 0, 0))
+        board.render()
+        pygame.display.flip()
+        clock.tick(50)
+    winner = True
+    congradulations(winner)
 terminate()
