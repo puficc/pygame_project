@@ -91,7 +91,7 @@ def congratulations(winner):
 
 def start_screen():
     global load_map
-    # load_music('start.wav')
+    load_music('first one.wav')
     x, y = None, None
     intro_text = ["Игра 'Линеечки'", "",
                   "Правила игры",
