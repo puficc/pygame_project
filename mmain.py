@@ -297,7 +297,7 @@ while running == True:
         board.render()
         pygame.display.flip()
         clock.tick(50)
-    if pygame.time.get_ticks() < 60000:
+    if pygame.time.get_ticks() < 60000 and kol == 10:
         winner = True
     else:
         winner = False
