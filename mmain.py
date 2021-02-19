@@ -75,7 +75,7 @@ def load_map_file(filename):
     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
 
 
-def congradulations(winner):
+def congratulations(winner):
     # load_music('final.wav')
     message = "Вы выиграли!" if winner else "Вы проиграли!"
     font = pygame.font.Font(None, 50)
@@ -103,7 +103,6 @@ def start_screen():
     x, y = None, None
     intro_text = ["Игра 'Линеечки'", "",
                   "Правила игры",
-                  "Произвольно расставить шары",
                   "Чтобы начать нажмите любую клавишу"]
 
     menu_border = pygame.sprite.Group()
@@ -306,6 +305,9 @@ while running == True:
         board.render()
         pygame.display.flip()
         clock.tick(50)
-    winner = True
-    congradulations(winner)
+    if pygame.time.get_ticks() < 60000:
+        winner = True
+    else:
+        winner = False
+    congratulations(winner)
 terminate()
